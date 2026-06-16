@@ -126,9 +126,85 @@
         // PANGKALAN DATA SILIBUS (NOTA DAN SOALAN)
         const silibus = {
             "Sains": [
-                { format: "nota", tajuk: "Bab 1: Benda Hidup", teks: "Benda hidup perlukan air, makanan dan udara untuk terus hidup. Benda hidup juga membesar dan bernafas.<br><br>Contoh: Kucing, Manusia, dan Pokok." },
-                { format: "objektif", tajuk: "Uji Minda Sains", teks: "Antara berikut, yang manakah benda hidup?", options: ["Kerusi", "Batu", "Pokok"], answer: "Pokok" },
-                { format: "subjektif", tajuk: "Uji Minda Sains", teks: "Benda hidup perlukan udara, makanan dan ____ ?", answer: "air" }
+                // --- BAB 1: BENDA HIDUP & BUKAN HIDUP ---
+                { format: "nota", tajuk: "Bab 1: Benda Hidup", teks: "Benda hidup memerlukan air, makanan dan udara. Benda hidup juga bernafas, membesar dan membiak.<br><br>Contoh: Kucing, pokok, manusia.<br>Benda bukan hidup pula tidak bernafas (contoh: batu, kerusi)." },
+                { format: "objektif", tajuk: "Uji Minda: Bab 1", teks: "Antara berikut, yang manakah benda hidup?", options: ["Kerusi", "Batu", "Burung"], answer: "Burung" },
+                { format: "objektif", tajuk: "Uji Minda: Bab 1", teks: "Benda hidup perlukan makanan dan ______ untuk terus hidup.", options: ["Air", "Mainan", "Buku"], answer: "Air" },
+                { format: "subjektif", tajuk: "Uji Minda: Bab 1", teks: "Manusia bernafas menggunakan _____. (Taip udara / air)", answer: "udara" },
+                { format: "subjektif", tajuk: "Uji Minda: Bab 1", teks: "Adakah kereta benda hidup atau bukan hidup?", answer: "bukan hidup" },
+                { format: "objektif", tajuk: "Uji Minda: Bab 1", teks: "Benda hidup akan menjadi lebih besar. Ini dipanggil...", options: ["Membesar", "Mengecil", "Tidur"], answer: "Membesar" },
+
+                // --- BAB 2: PERATURAN BILIK SAINS ---
+                { format: "nota", tajuk: "Bab 2: Peraturan Bilik Sains", teks: "Kita mesti patuh peraturan di bilik sains untuk keselamatan.<br>1. Beratur sebelum masuk.<br>2. Jangan berlari atau bermain.<br>3. Minta izin guru sebelum guna peralatan." },
+                { format: "objektif", tajuk: "Uji Minda: Bab 2", teks: "Apa yang perlu kita buat sebelum masuk ke bilik sains?", options: ["Bermain", "Beratur", "Makan"], answer: "Beratur" },
+                { format: "objektif", tajuk: "Uji Minda: Bab 2", teks: "Bolehkah kita makan di dalam bilik sains?", options: ["Boleh", "Tidak Boleh", "Kadang-kadang"], answer: "Tidak Boleh" },
+                { format: "subjektif", tajuk: "Uji Minda: Bab 2", teks: "Kita mesti membuang sampah ke dalam tong ______.", answer: "sampah" },
+                { format: "subjektif", tajuk: "Uji Minda: Bab 2", teks: "Minta _____ guru sebelum menggunakan alatan sains.", answer: "izin" },
+                { format: "objektif", tajuk: "Uji Minda: Bab 2", teks: "Jika gelas pecah di bilik sains, kita mesti...", options: ["Kutip sendiri", "Biar sahaja", "Beritahu guru"], answer: "Beritahu guru" },
+
+                // --- BAB 3: DERIA MANUSIA ---
+                { format: "nota", tajuk: "Bab 3: Deria Manusia", teks: "Manusia ada 5 deria penting:<br>Mata = Melihat<br>Hidung = Menghidu bau<br>Telinga = Mendengar<br>Lidah = Merasa (manis, masin, pahit)<br>Kulit = Menyentuh (kasar, lembut, panas)." },
+                { format: "objektif", tajuk: "Uji Minda: Bab 3", teks: "Kita mendengar bunyi radio menggunakan...", options: ["Mata", "Telinga", "Hidung"], answer: "Telinga" },
+                { format: "objektif", tajuk: "Uji Minda: Bab 3", teks: "Apakah rasa buah lemon?", options: ["Manis", "Masam", "Masin"], answer: "Masam" },
+                { format: "subjektif", tajuk: "Uji Minda: Bab 3", teks: "Kita menggunakan organ _____ untuk melihat bunga.", answer: "mata" },
+                { format: "subjektif", tajuk: "Uji Minda: Bab 3", teks: "Bunga mawar berbau wangi. Kita menghidunya menggunakan organ ____.", answer: "hidung" },
+                { format: "objektif", tajuk: "Uji Minda: Bab 3", teks: "Permukaan batu terasa...", options: ["Kasar", "Lembut", "Licin"], answer: "Kasar" },
+
+                // --- BAB 4: HAIWAN ---
+                { format: "nota", tajuk: "Bab 4: Haiwan", teks: "Haiwan mempunyai pelbagai bahagian tubuh.<br>- Burung ada sayap dan paruh.<br>- Ikan ada sirip dan sisik.<br>- Lembu ada tanduk dan bulu halus.<br>- Katak ada kulit lembap." },
+                { format: "objektif", tajuk: "Uji Minda: Bab 4", teks: "Haiwan manakah yang mempunyai sayap untuk terbang?", options: ["Burung", "Kucing", "Ikan"], answer: "Burung" },
+                { format: "objektif", tajuk: "Uji Minda: Bab 4", teks: "Bahagian badan ikan yang membantunya berenang ialah...", options: ["Kaki", "Sirip", "Tanduk"], answer: "Sirip" },
+                { format: "subjektif", tajuk: "Uji Minda: Bab 4", teks: "Lembu dan kambing mempunyai _____ di atas kepala mereka.", answer: "tanduk" },
+                { format: "subjektif", tajuk: "Uji Minda: Bab 4", teks: "Itik mempunyai _____ untuk mematuk makanan.", answer: "paruh" },
+                { format: "objektif", tajuk: "Uji Minda: Bab 4", teks: "Kura-kura mempunyai bahagian badan yang keras untuk melindungi dirinya, iaitu...", options: ["Bulu", "Cengkerang", "Sisik"], answer: "Cengkerang" },
+
+                // --- BAB 5: TUMBUHAN ---
+                { format: "nota", tajuk: "Bab 5: Tumbuhan", teks: "Bahagian utama tumbuhan ialah Daun, Bunga, Batang, dan Akar.<br>Akar ada dua jenis: Akar tunjang (besar) dan Akar serabut (banyak/halus).<br>Daun pula ada urat jejala (berselirat) dan urat selari (lurus)." },
+                { format: "objektif", tajuk: "Uji Minda: Bab 5", teks: "Bahagian tumbuhan yang biasanya berwarna warni dan wangi ialah...", options: ["Akar", "Batang", "Bunga"], answer: "Bunga" },
+                { format: "objektif", tajuk: "Uji Minda: Bab 5", teks: "Pokok kelapa mempunyai jenis akar...", options: ["Tunjang", "Serabut", "Keras"], answer: "Serabut" },
+                { format: "subjektif", tajuk: "Uji Minda: Bab 5", teks: "Bahagian tumbuhan yang berada di dalam tanah ialah ____.", answer: "akar" },
+                { format: "subjektif", tajuk: "Uji Minda: Bab 5", teks: "Pokok pandan mempunyai daun berurat _____ (jejalar / selari).", answer: "selari" },
+                { format: "objektif", tajuk: "Uji Minda: Bab 5", teks: "Tumbuhan yang mempunyai batang berkayu ialah...", options: ["Pokok Mangga", "Pokok Pisang", "Rumput"], answer: "Pokok Mangga" },
+
+                // --- BAB 6: MAGNET ---
+                { format: "nota", tajuk: "Bab 6: Magnet", teks: "Magnet boleh menarik objek besi (seperti paku, klip kertas). Magnet tidak menarik plastik atau kayu.<br>Magnet ada pelbagai bentuk: Bar, Ladam, Cincin, Butang, dan Silinder.<br>Kutub magnet yang sama akan MENOLAK, yang berbeza akan MENARIK." },
+                { format: "objektif", tajuk: "Uji Minda: Bab 6", teks: "Antara berikut, objek manakah yang ditarik oleh magnet?", options: ["Pemadam", "Klip Kertas", "Buku"], answer: "Klip Kertas" },
+                { format: "objektif", tajuk: "Uji Minda: Bab 6", teks: "Magnet berbentuk seperti huruf 'U' dipanggil magnet...", options: ["Bar", "Cincin", "Ladam"], answer: "Ladam" },
+                { format: "subjektif", tajuk: "Uji Minda: Bab 6", teks: "Magnet mempunyai keupayaan untuk _______ objek yang diperbuat daripada besi.", answer: "menarik" },
+                { format: "subjektif", tajuk: "Uji Minda: Bab 6", teks: "Adakah pensel kayu akan ditarik oleh magnet? (Ya / Tidak)", answer: "tidak" },
+                { format: "objektif", tajuk: "Uji Minda: Bab 6", teks: "Dua kutub magnet yang SAMA jenis jika didekatkan akan...", options: ["Menolak", "Menarik", "Melekat"], answer: "Menolak" },
+
+                // --- BAB 7: PENYERAPAN ---
+                { format: "nota", tajuk: "Bab 7: Penyerapan", teks: "Objek menyerap air: Tisu, kain kapas, span, kertas.<br>Objek tidak menyerap air: Plastik, kaca, besi, getah.<br>Objek tidak menyerap air sangat penting untuk buat payung atau baju hujan." },
+                { format: "objektif", tajuk: "Uji Minda: Bab 7", teks: "Yang manakah bahan yang menyerap air?", options: ["Sudu Besi", "Kain Tuala", "Cawan Kaca"], answer: "Kain Tuala" },
+                { format: "objektif", tajuk: "Uji Minda: Bab 7", teks: "Untuk mengelap air teh yang tumpah, kita patut guna...", options: ["Kertas Tisu", "Plastik", "Pemadam"], answer: "Kertas Tisu" },
+                { format: "subjektif", tajuk: "Uji Minda: Bab 7", teks: "Span ______ air dengan sangat baik.", answer: "menyerap" },
+                { format: "subjektif", tajuk: "Uji Minda: Bab 7", teks: "Baju hujan diperbuat daripada bahan yang ______ menyerap air.", answer: "tidak" },
+                { format: "objektif", tajuk: "Uji Minda: Bab 7", teks: "Mengapakah payung dibuat daripada plastik?", options: ["Sebab ia cantik", "Sebab ia tidak menyerap air", "Sebab ia ringan"], answer: "Sebab ia tidak menyerap air" },
+
+                // --- BAB 8: BENTUK MUKA BUMI ---
+                { format: "nota", tajuk: "Bab 8: Bentuk Muka Bumi", teks: "Bentuk muka bumi di sekeliling kita termasuklah:<br>Gunung (sangat tinggi), Bukit (kurang tinggi), Lembah (kawasan rendah antara bukit), Laut, Pantai, Sungai dan Tasik." },
+                { format: "objektif", tajuk: "Uji Minda: Bab 8", teks: "Kawasan air masin yang sangat luas dikenali sebagai...", options: ["Sungai", "Tasik", "Laut"], answer: "Laut" },
+                { format: "objektif", tajuk: "Uji Minda: Bab 8", teks: "Kawasan tanah tinggi yang paling tinggi ialah...", options: ["Gunung", "Bukit", "Pantai"], answer: "Gunung" },
+                { format: "subjektif", tajuk: "Uji Minda: Bab 8", teks: "Kawasan tanah lapang yang berpasir di tepi laut dipanggil ______.", answer: "pantai" },
+                { format: "subjektif", tajuk: "Uji Minda: Bab 8", teks: "Kawasan rendah di antara dua buah bukit atau gunung dipanggil ______.", answer: "lembah" },
+                { format: "objektif", tajuk: "Uji Minda: Bab 8", teks: "Air yang mengalir turun dari kawasan tinggi ke laut dipanggil...", options: ["Pantai", "Tasik", "Sungai"], answer: "Sungai" },
+
+                // --- BAB 9: TANAH ---
+                { format: "nota", tajuk: "Bab 9: Tanah", teks: "Terdapat 3 jenis tanah utama untuk pokok:<br>1. Tanah Kebun (warna hitam, baik untuk tanam sayur).<br>2. Tanah Liat (warna kemerahan, sentiasa basah, untuk pokok padi).<br>3. Pasir (di tepi laut, untuk pokok kelapa)." },
+                { format: "objektif", tajuk: "Uji Minda: Bab 9", teks: "Pokok padi sangat sesuai ditanam di dalam...", options: ["Tanah Liat", "Pasir", "Batu"], answer: "Tanah Liat" },
+                { format: "objektif", tajuk: "Uji Minda: Bab 9", teks: "Tanah yang sangat sesuai untuk menanam sayur-sayuran ialah...", options: ["Pasir", "Tanah Kebun", "Tanah Liat"], answer: "Tanah Kebun" },
+                { format: "subjektif", tajuk: "Uji Minda: Bab 9", teks: "Pokok kelapa dan kaktus banyak tumbuh di kawasan tanah jenis _______.", answer: "pasir" },
+                { format: "subjektif", tajuk: "Uji Minda: Bab 9", teks: "Batu-batu kecil banyak dijumpai di dalam tanah ______.", answer: "kebun" },
+                { format: "objektif", tajuk: "Uji Minda: Bab 9", teks: "Tanah yang paling halus dan melekit bila basah ialah...", options: ["Tanah Liat", "Pasir", "Tanah Kebun"], answer: "Tanah Liat" },
+
+                // --- BAB 10: ASAS BINAAN ---
+                { format: "nota", tajuk: "Bab 10: Asas Binaan", teks: "Terdapat pelbagai bentuk bongkah asas binaan:<br>1. Kubus (seperti dadu).<br>2. Kuboid (seperti kotak kasut).<br>3. Sfera (seperti bola).<br>4. Piramid (seperti bumbung khemah/Mesir).<br>5. Silinder (seperti tin minuman)." },
+                { format: "objektif", tajuk: "Uji Minda: Bab 10", teks: "Bongkah yang manakah berbentuk seperti sebiji bola?", options: ["Sfera", "Silinder", "Kubus"], answer: "Sfera" },
+                { format: "objektif", tajuk: "Uji Minda: Bab 10", teks: "Tin minuman kordial mempunyai bentuk bongkah...", options: ["Piramid", "Kuboid", "Silinder"], answer: "Silinder" },
+                { format: "subjektif", tajuk: "Uji Minda: Bab 10", teks: "Dadu permainan ular dan tangga berbentuk _______.", answer: "kubus" },
+                { format: "subjektif", tajuk: "Uji Minda: Bab 10", teks: "Kotak kasut atau peti sejuk biasanya berbentuk _______.", answer: "kuboid" },
+                { format: "objektif", tajuk: "Uji Minda: Bab 10", teks: "Bongkah yang mempunyai tapak segi empat dan bucu tajam di atas ialah...", options: ["Sfera", "Silinder", "Piramid"], answer: "Piramid" }
             ],
             "Matematik": [
                 { format: "nota", tajuk: "Bab 1: Nombor hingga 100", teks: "Nombor menaik disusun dari nilai kecil ke nilai besar.<br><br>Contoh: 1, 2, 3, 4, 5." },
