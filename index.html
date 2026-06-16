@@ -58,9 +58,8 @@
         }
         .menu-btn:active { box-shadow: 0 1px #FFB300; transform: translateY(3px); }
 
-        /* Gaya untuk butang yang dah dikunci */
         .menu-btn:disabled {
-            background-color: #B0BEC5 !important; /* Warna Kelabu */
+            background-color: #B0BEC5 !important;
             color: #78909C !important;
             box-shadow: none !important;
             cursor: not-allowed !important;
@@ -407,7 +406,7 @@
         let currentScore = 0;
         let dahJawab = false; 
         
-        let namaSubjekSemasa = ""; // Kenal pasti subjek yang sedang dijawab
+        let namaSubjekSemasa = ""; 
         let timerInterval;
         let masaTinggal = 600; 
 
@@ -436,6 +435,17 @@
                 oscillator.type = 'sawtooth';
                 oscillator.frequency.setValueAtTime(200, audioCtx.currentTime);
                 gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 1.5);
+                oscillator.start(audioCtx.currentTime);
+                oscillator.stop(audioCtx.currentTime + 1.5);
+            } else if (jenis === 'menang') {
+                // Bunyi gembira bila dapat 100 markah!
+                oscillator.type = 'sine';
+                oscillator.frequency.setValueAtTime(523.25, audioCtx.currentTime); // C5
+                oscillator.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.2); // E5
+                oscillator.frequency.setValueAtTime(783.99, audioCtx.currentTime + 0.4); // G5
+                oscillator.frequency.setValueAtTime(1046.50, audioCtx.currentTime + 0.6); // C6
+                gainNode.gain.setValueAtTime(1, audioCtx.currentTime);
                 gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 1.5);
                 oscillator.start(audioCtx.currentTime);
                 oscillator.stop(audioCtx.currentTime + 1.5);
@@ -477,7 +487,7 @@
         }
 
         function pilihSubjek(namaSubjek) {
-            namaSubjekSemasa = namaSubjek; // Simpan nama subjek semasa
+            namaSubjekSemasa = namaSubjek; 
             let dataSubjek = silibus[namaSubjek];
             
             let senaraiNota = dataSubjek.filter(item => item.format === "nota");
@@ -507,13 +517,25 @@
 
         function tunjukReportKad(status) {
             hentiMasa();
-            mainkanBunyi('tamat');
             
-            let jumlahSoalan = currentSubjek.filter(item => item.format !== 'nota').length;
-            let markahPenuh = jumlahSoalan * 10;
+            // Pilih bunyi & mesej ikut status
+            let tajukMesej = "";
+            let warnaTajuk = "";
+            let markahPenuh = 100; // Sentiasa paparkan /100
             
-            let tajukMesej = status === 'masa' ? "Masa Tamat! ⏰" : "Ujian Selesai! 🎉";
-            let warnaTajuk = status === 'masa' ? "#D32F2F" : "#0097A7";
+            if (status === 'lulus') {
+                mainkanBunyi('menang');
+                tajukMesej = "Lulus Cemerlang! 🏆";
+                warnaTajuk = "#4CAF50";
+            } else if (status === 'masa') {
+                mainkanBunyi('tamat');
+                tajukMesej = "Masa Tamat! ⏰";
+                warnaTajuk = "#D32F2F";
+            } else {
+                mainkanBunyi('tamat');
+                tajukMesej = "Ujian Selesai! 🎉";
+                warnaTajuk = "#0097A7";
+            }
             
             document.getElementById('display-title').innerText = tajukMesej;
             document.getElementById('display-title').style.color = warnaTajuk;
@@ -524,19 +546,18 @@
                     <h2>Kad Laporan Ujian</h2>
                     <p>Subjek Disiapkan</p>
                     <div class="mark">${currentScore} / ${markahPenuh}</div>
-                    <p>Teruskan Usaha Adik!</p>
+                    <p>${status === 'lulus' ? 'Tahniah! Adik sangat pandai!' : 'Teruskan Usaha Adik!'}</p>
                 </div>
             `;
             
             document.getElementById('display-text').innerHTML = htmlLaporan;
             document.getElementById('action-area').innerHTML = '<button class="btn-action" style="background-color:#FF9800; margin-top:20px;" onclick="kembaliKeMenu()">Pilih Subjek Lain</button>';
 
-            // KUNCI BUTANG JIKA UJIAN SELESAI
-            if (status === 'selesai' || status === 'masa') {
+            // KUNCI BUTANG JIKA LULUS (100 Markah), MASA TAMAT ATAU SOALAN HABIS
+            if (status === 'lulus' || status === 'selesai' || status === 'masa') {
                 let butangSubjek = document.getElementById("btn-" + namaSubjekSemasa);
                 if (butangSubjek) {
                     butangSubjek.disabled = true;
-                    // Tambah tanda right (✅) kalau belum ada
                     if (!butangSubjek.innerText.includes("✅")) {
                         butangSubjek.innerText = butangSubjek.innerText + " ✅";
                     }
@@ -623,7 +644,13 @@
             document.getElementById('feedback').style.color = "#4CAF50";
             
             document.getElementById('action-area').style.opacity = "0.4"; 
-            setTimeout(() => { seterusnya(); }, 1500); 
+            
+            // SEMAKAN 100 MARKAH DI SINI!
+            if (currentScore >= 100) {
+                setTimeout(() => { tunjukReportKad('lulus'); }, 1500); 
+            } else {
+                setTimeout(() => { seterusnya(); }, 1500); 
+            }
         }
 
         function jawabSalah(jawapanSebenar) {
