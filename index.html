@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Matematik Super Genius</title>
+    <title>Aplikasi Belajar Super Genius</title>
     <style>
         *, *::before, *::after { box-sizing: border-box; }
         
         body { 
             font-family: 'Comic Sans MS', cursive, sans-serif; 
-            background-color: #FFF9E6; 
+            background-color: #E0F7FA; 
             text-align: center; 
             margin: 0; 
             padding: 20px; 
@@ -19,141 +19,150 @@
             padding: 30px; 
             border-radius: 25px; 
             box-shadow: 0 10px 20px rgba(0,0,0,0.1); 
-            max-width: 550px; 
+            max-width: 600px; 
             margin: 30px auto; 
-            border: 6px solid #FFB74D; 
+            border: 6px solid #00BCD4; 
         }
-        h1 { color: #E65100; font-size: 28px; margin-top: 0; }
-        .score { font-size: 20px; color: #1E88E5; margin-bottom: 20px; font-weight: bold; }
+        h1 { color: #0097A7; font-size: 28px; margin-top: 0; }
+        .score { font-size: 20px; color: #E65100; margin-bottom: 20px; font-weight: bold; }
         
-        /* Kotak Soalan */
-        .question-box {
+        /* Bahagian Menu Subjek */
+        .menu-btn {
+            background-color: #FFCA28;
+            color: #333;
+            border: none;
+            padding: 15px 20px;
+            font-size: 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 4px #FFB300;
+            margin: 10px;
+            width: 80%;
+            max-width: 250px;
+            font-weight: bold;
+        }
+        .menu-btn:active { box-shadow: 0 1px #FFB300; transform: translateY(3px); }
+
+        /* Kotak Paparan */
+        .content-box {
             background-color: #F5F5F5;
             padding: 20px;
             border-radius: 15px;
             margin-bottom: 25px;
-            border-left: 6px solid #FFB74D;
+            border-left: 6px solid #00BCD4;
+            text-align: left;
         }
-        .question { font-size: 24px; color: #333; line-height: 1.5; }
+        .text-display { font-size: 22px; color: #333; line-height: 1.6; }
+        .title-display { color: #0097A7; font-size: 24px; font-weight: bold; margin-bottom: 10px; border-bottom: 2px dashed #ccc; padding-bottom: 5px; }
         
-        /* Bahagian Pilihan Jawapan (Objektif) */
-        .options { 
-            display: block; 
-        }
-        .btn-opt { 
+        /* Butang Jawapan & Navigasi */
+        .btn-action { 
             background-color: #4CAF50; 
             color: white; 
             border: none; 
             padding: 15px; 
-            font-size: 22px; 
+            font-size: 20px; 
             border-radius: 12px; 
             cursor: pointer; 
             box-shadow: 0 4px #388E3C; 
             margin: 8px;
-            width: 80%;
-            max-width: 200px;
             display: inline-block;
         }
-        .btn-opt:active { 
-            box-shadow: 0 1px #388E3C; 
-            transform: translateY(3px); 
-        }
+        .btn-action:active { box-shadow: 0 1px #388E3C; transform: translateY(3px); }
         
-        /* Bahagian Input Jawapan (Subjektif) */
-        .subjective-box {
-            margin: 20px 0;
-        }
         .input-jawapan {
-            font-size: 26px;
+            font-size: 24px;
             padding: 10px;
-            width: 150px;
+            width: 70%;
             text-align: center;
             border: 3px solid #64B5F6;
             border-radius: 10px;
             outline: none;
             font-family: 'Comic Sans MS', cursive, sans-serif;
-        }
-        .btn-hantar {
-            background-color: #2196F3;
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            font-size: 22px;
-            border-radius: 10px;
-            cursor: pointer;
-            box-shadow: 0 4px #1976D2;
-            margin-left: 10px;
-            vertical-align: top;
-        }
-        .btn-hantar:active {
-            box-shadow: 0 1px #1976D2;
-            transform: translateY(3px);
+            margin-bottom: 10px;
         }
 
-        /* Bunyi & Maklumbalas */
-        .feedback { font-size: 26px; margin-top: 15px; font-weight: bold; min-height: 40px; }
+        .feedback { font-size: 24px; margin-top: 15px; font-weight: bold; min-height: 40px; }
         
-        .btn-mula {
-            background-color: #FF5722;
+        .btn-kembali {
+            background-color: #F44336;
             color: white;
             border: none;
-            padding: 15px 40px;
-            font-size: 24px;
-            border-radius: 15px;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 8px;
             cursor: pointer;
-            box-shadow: 0 5px #E64A19;
+            margin-bottom: 20px;
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>🎒 Matematik Darjah 1 ✨</h1>
-        <div class="score">Markah Adik: <span id="score">0</span> 🌟</div>
+        <h1>🎒 Mari Belajar Tahun 1 ✨</h1>
         
-        <div id="game-area">
-            <div class="question-box">
-                <div class="question" id="question">Adakah adik sedia nak belajar?</div>
-            </div>
-            <div id="action-area">
-                <button class="btn-mula" onclick="startGame()">Mula Sekarang!</button>
-            </div>
+        <div id="main-menu">
+            <h2>Pilih Subjek Adik:</h2>
+            <button class="menu-btn" onclick="pilihSubjek('Sains')">🔬 Sains</button>
+            <button class="menu-btn" onclick="pilihSubjek('Matematik')">🧮 Matematik</button>
+            <button class="menu-btn" onclick="pilihSubjek('BM')">📖 Bahasa Melayu</button>
         </div>
-        
-        <div class="feedback" id="feedback"></div>
+
+        <div id="learning-area" style="display: none;">
+            <button class="btn-kembali" onclick="kembaliKeMenu()">⬅️ Tukar Subjek</button>
+            <div class="score">Markah Kuiz: <span id="score">0</span> 🌟</div>
+            
+            <div class="content-box">
+                <div class="title-display" id="display-title">Tajuk</div>
+                <div class="text-display" id="display-text">Memuatkan teks...</div>
+            </div>
+            
+            <div id="action-area"></div>
+            <div class="feedback" id="feedback"></div>
+        </div>
     </div>
 
     <script>
-        let currentScore = 0;
-        let currentQuestionIndex = 0;
-        
-        // REKOD SOALAN DI SINI
-        const questions = [
-            { format: "objektif", q: "4 + 5 = ?", options: [8, 9, 10], answer: 9 },
-            { format: "objektif", q: "Ali ada 3 biji epal. Abu beri lagi 4 biji epal kepada Ali. Berapa jumlah epal Ali sekarang?", options: [6, 7, 8], answer: 7 },
-            { format: "subjektif", q: "Siti beli 10 biji kek cawan. Dia makan 3 biji. Berapa biji kek cawan yang tinggal?", answer: 7 },
-            { format: "subjektif", q: "15 - 5 = ?", answer: 10 },
-            { format: "objektif", q: "Di dalam reban ada 6 ekor ayam. 2 ekor ayam telah keluar mencari makan. Berapa ayam yang tinggal di dalam reban?", options: [4, 5, 8], answer: 4 }
-        ];
+        // PANGKALAN DATA SILIBUS (NOTA DAN SOALAN)
+        const silibus = {
+            "Sains": [
+                { format: "nota", tajuk: "Bab 1: Benda Hidup", teks: "Benda hidup perlukan air, makanan dan udara untuk terus hidup. Benda hidup juga membesar dan bernafas.<br><br>Contoh: Kucing, Manusia, dan Pokok." },
+                { format: "objektif", tajuk: "Uji Minda Sains", teks: "Antara berikut, yang manakah benda hidup?", options: ["Kerusi", "Batu", "Pokok"], answer: "Pokok" },
+                { format: "subjektif", tajuk: "Uji Minda Sains", teks: "Benda hidup perlukan udara, makanan dan ____ ?", answer: "air" }
+            ],
+            "Matematik": [
+                { format: "nota", tajuk: "Bab 1: Nombor hingga 100", teks: "Nombor menaik disusun dari nilai kecil ke nilai besar.<br><br>Contoh: 1, 2, 3, 4, 5." },
+                { format: "objektif", tajuk: "Uji Minda Matematik", teks: "Apakah nombor selepas 10?", options: ["9", "11", "12"], answer: "11" },
+                { format: "subjektif", tajuk: "Uji Minda Matematik", teks: "2 + 3 = ?", answer: "5" }
+            ],
+            "BM": [
+                { format: "nota", tajuk: "Bab 1: Keluarga Saya", teks: "Keluarga asas terdiri daripada bapa, ibu, abang, kakak dan adik. Kita mesti hormat ahli keluarga kita." },
+                { format: "objektif", tajuk: "Uji Minda BM", teks: "Ibu kepada ayah kita dipanggil apa?", options: ["Nenek", "Mak Cik", "Kakak"], answer: "Nenek" },
+                { format: "subjektif", tajuk: "Uji Minda BM", teks: "Emak masak nasi di ceruk ____.", answer: "dapur" }
+            ]
+        };
 
-        // FUNGSI JANA BUNYI AUTOMATIK (100% Percuma, Tanpa Fail)
+        let currentSubjek = [];
+        let currentIndex = 0;
+        let currentScore = 0;
+
+        // Fungsi Bunyi Automatik
         function mainkanBunyi(jenis) {
             const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             const oscillator = audioCtx.createOscillator();
             const gainNode = audioCtx.createGain();
-            
             oscillator.connect(gainNode);
             gainNode.connect(audioCtx.destination);
             
             if (jenis === 'betul') {
-                oscillator.type = 'sine'; // Bunyi nyaring dan lembut
+                oscillator.type = 'sine';
                 oscillator.frequency.setValueAtTime(880, audioCtx.currentTime); 
                 gainNode.gain.setValueAtTime(1, audioCtx.currentTime);
                 gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
                 oscillator.start(audioCtx.currentTime);
                 oscillator.stop(audioCtx.currentTime + 0.5);
             } else {
-                oscillator.type = 'square'; // Bunyi amaran / buzzer
+                oscillator.type = 'square';
                 oscillator.frequency.setValueAtTime(150, audioCtx.currentTime); 
                 gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
                 gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
@@ -162,101 +171,111 @@
             }
         }
 
-        function startGame() {
+        function pilihSubjek(namaSubjek) {
+            currentSubjek = silibus[namaSubjek];
+            currentIndex = 0;
             currentScore = 0;
-            currentQuestionIndex = 0;
+            
+            document.getElementById('main-menu').style.display = 'none';
+            document.getElementById('learning-area').style.display = 'block';
             document.getElementById('score').innerText = currentScore;
-            document.getElementById('feedback').innerText = "";
-            showQuestion();
+            
+            paparKandungan();
         }
 
-        function showQuestion() {
-            if (currentQuestionIndex >= questions.length) {
-                document.getElementById('question').innerText = "Hebatnya adik! Semua soalan dah selesai! 🎉";
-                document.getElementById('action-area').innerHTML = '<button class="btn-mula" onclick="startGame()">Main Semula</button>';
+        function kembaliKeMenu() {
+            document.getElementById('main-menu').style.display = 'block';
+            document.getElementById('learning-area').style.display = 'none';
+        }
+
+        function paparKandungan() {
+            document.getElementById('feedback').innerText = "";
+            
+            if (currentIndex >= currentSubjek.length) {
+                document.getElementById('display-title').innerText = "Tahniah! 🎉";
+                document.getElementById('display-text').innerHTML = "Adik dah tamat belajar subjek ini! Markah akhir: <strong>" + currentScore + "</strong>";
+                document.getElementById('action-area').innerHTML = '<button class="btn-action" onclick="kembaliKeMenu()">Pilih Subjek Lain</button>';
                 return;
             }
 
-            const currentQ = questions[currentQuestionIndex];
-            document.getElementById('question').innerText = currentQ.q;
+            const item = currentSubjek[currentIndex];
+            document.getElementById('display-title').innerText = item.tajuk;
+            document.getElementById('display-text').innerHTML = item.teks;
             
             const actionArea = document.getElementById('action-area');
             
-            if (currentQ.format === "objektif") {
-                let optionsHtml = '<div class="options">';
-                currentQ.options.forEach(opt => {
-                    optionsHtml += `<button class="btn-opt" onclick="checkObjektif(${opt}, ${currentQ.answer})">${opt}</button>`;
+            // Format Nota (Hanya baca)
+            if (item.format === "nota") {
+                actionArea.innerHTML = `<button class="btn-action" style="background-color:#2196F3;" onclick="seterusnya()">Faham, Seterusnya! ➡️</button>`;
+            } 
+            // Format Kuiz Objektif
+            else if (item.format === "objektif") {
+                let optionsHtml = '';
+                item.options.forEach(opt => {
+                    optionsHtml += `<button class="btn-action" onclick="semakObjektif('${opt}', '${item.answer}')">${opt}</button>`;
                 });
-                optionsHtml += '</div>';
                 actionArea.innerHTML = optionsHtml;
             } 
-            else if (currentQ.format === "subjektif") {
+            // Format Kuiz Subjektif (Isi tempat kosong)
+            else if (item.format === "subjektif") {
                 actionArea.innerHTML = `
-                    <div class="subjective-box">
-                        <input type="number" id="inputJawapan" class="input-jawapan" placeholder="?" min="0" onkeyup="checkEnter(event)">
-                        <button class="btn-hantar" onclick="checkSubjektif(${currentQ.answer})">Semak</button>
-                    </div>
+                    <input type="text" id="inputJawapan" class="input-jawapan" placeholder="Taip jawapan..." onkeyup="checkEnter(event, '${item.answer}')">
+                    <br><button class="btn-action" onclick="semakSubjektif('${item.answer}')">Semak Jawapan</button>
                 `;
                 document.getElementById('inputJawapan').focus();
             }
         }
 
-        function checkObjektif(selected, correct) {
-            if (selected === correct) {
+        function semakObjektif(selected, correct) {
+            if (selected.toString().toLowerCase() === correct.toString().toLowerCase()) {
                 jawabBetul();
             } else {
                 jawabSalah();
             }
         }
 
-        function checkSubjektif(correct) {
-            const inputField = document.getElementById('inputJawapan');
-            const jawapanAnak = parseInt(inputField.value);
+        function semakSubjektif(correct) {
+            const inputField = document.getElementById('inputJawapan').value.trim().toLowerCase();
+            const jawapanSebenar = correct.toString().toLowerCase();
             
-            if (isNaN(jawapanAnak)) {
-                document.getElementById('feedback').innerText = "Sila taip nombor dahulu ya! 😊";
+            if (inputField === "") {
+                document.getElementById('feedback').innerText = "Sila taip jawapan dahulu ya! 😊";
                 document.getElementById('feedback').style.color = "#FF9800";
                 return;
             }
 
-            if (jawapanAnak === correct) {
+            if (inputField === jawapanSebenar) {
                 jawabBetul();
             } else {
                 jawabSalah();
             }
         }
 
-        function checkEnter(event) {
-            if (event.key === "Enter") {
-                const currentQ = questions[currentQuestionIndex];
-                checkSubjektif(currentQ.answer);
-            }
+        function checkEnter(event, correct) {
+            if (event.key === "Enter") { semakSubjektif(correct); }
         }
 
         function jawabBetul() {
-            mainkanBunyi('betul'); // Panggil fungsi bunyi dari kod
-
+            mainkanBunyi('betul');
             currentScore += 10;
             document.getElementById('score').innerText = currentScore;
             document.getElementById('feedback').innerText = "🌟 BETUL! Pandai sangat!";
             document.getElementById('feedback').style.color = "#4CAF50";
-            seterusnya();
+            
+            // Sembunyikan butang sementara tunggu
+            document.getElementById('action-area').innerHTML = ""; 
+            setTimeout(() => { seterusnya(); }, 2000);
         }
 
         function jawabSalah() {
-            mainkanBunyi('salah'); // Panggil fungsi bunyi dari kod
-
+            mainkanBunyi('salah');
             document.getElementById('feedback').innerText = "❌ Alamak, cuba lagi sayang!";
             document.getElementById('feedback').style.color = "#F44336";
-            seterusnya();
         }
 
         function seterusnya() {
-            currentQuestionIndex++;
-            setTimeout(() => {
-                document.getElementById('feedback').innerText = "";
-                showQuestion();
-            }, 2000);
+            currentIndex++;
+            paparKandungan();
         }
     </script>
 </body>
