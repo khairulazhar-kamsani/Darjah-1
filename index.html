@@ -98,7 +98,7 @@
             margin-bottom: 10px;
         }
 
-        .feedback { font-size: 24px; margin-top: 15px; font-weight: bold; min-height: 40px; }
+        .feedback { font-size: 22px; margin-top: 15px; font-weight: bold; min-height: 40px; }
         
         .btn-kembali {
             background-color: #F44336;
@@ -110,6 +110,18 @@
             cursor: pointer;
             margin-bottom: 20px;
         }
+
+        /* Kad Laporan Ujian */
+        .report-card {
+            background-color: #FFF9C4;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            border: 4px solid #FBC02D;
+        }
+        .report-card h2 { margin-top: 0; color: #F57F17; }
+        .report-card .mark { font-size: 36px; color: #2E7D32; font-weight: bold; margin: 15px 0; }
+        .report-card p { font-size: 20px; color: #555; margin: 5px; }
     </style>
 </head>
 <body>
@@ -390,6 +402,7 @@
         let currentSubjek = [];
         let currentIndex = 0;
         let currentScore = 0;
+        let dahJawab = false; // "Kunci" supaya tak boleh tekan banyak kali
         
         // Pembolehubah Pemasa (Timer)
         let timerInterval;
@@ -417,7 +430,6 @@
                 oscillator.start(audioCtx.currentTime);
                 oscillator.stop(audioCtx.currentTime + 0.3);
             } else if (jenis === 'tamat') {
-                // Bunyi panjang bila masa habis
                 oscillator.type = 'sawtooth';
                 oscillator.frequency.setValueAtTime(200, audioCtx.currentTime);
                 gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime);
@@ -427,31 +439,23 @@
             }
         }
 
-        // --- SISTEM PEMASA ---
         function mulaMasa() {
-            masaTinggal = 600; // Reset ke 10 minit
+            masaTinggal = 600; 
             kemaskiniPaparanMasa();
             document.getElementById('timer-box').classList.remove('warning');
             
             timerInterval = setInterval(() => {
                 masaTinggal--;
                 kemaskiniPaparanMasa();
-
-                // Berkelip merah bila masa tinggal 1 minit (60 saat)
-                if (masaTinggal <= 60) {
-                    document.getElementById('timer-box').classList.add('warning');
-                }
-
+                if (masaTinggal <= 60) document.getElementById('timer-box').classList.add('warning');
                 if (masaTinggal <= 0) {
                     hentiMasa();
-                    masaDahTamat();
+                    tunjukReportKad('masa'); // Panggil Kad Laporan sebab masa tamat
                 }
             }, 1000);
         }
 
-        function hentiMasa() {
-            clearInterval(timerInterval);
-        }
+        function hentiMasa() { clearInterval(timerInterval); }
 
         function kemaskiniPaparanMasa() {
             let minit = Math.floor(masaTinggal / 60);
@@ -460,16 +464,6 @@
             if (saat < 10) saat = "0" + saat;
             document.getElementById('timer').innerText = minit + ":" + saat;
         }
-
-        function masaDahTamat() {
-            mainkanBunyi('tamat');
-            document.getElementById('display-title').innerText = "Masa Tamat! ⏰";
-            document.getElementById('display-title').style.color = "#D32F2F";
-            document.getElementById('display-text').innerHTML = "Alamak, masa adik dah habis untuk subjek ini!<br><br>Markah terkumpul adik: <strong>" + currentScore + "</strong> 🌟";
-            document.getElementById('action-area').innerHTML = '<button class="btn-action" style="background-color:#FF9800;" onclick="kembaliKeMenu()">Pilih Subjek Lain</button>';
-            document.getElementById('feedback').innerText = "";
-        }
-        // ---------------------
 
         function pilihSubjek(namaSubjek) {
             currentSubjek = silibus[namaSubjek];
@@ -482,24 +476,54 @@
             document.getElementById('display-title').style.color = "#0097A7";
             
             hentiMasa();
-            mulaMasa(); // Mulakan timer bila subjek ditekan
+            mulaMasa(); 
             paparKandungan();
         }
 
         function kembaliKeMenu() {
-            hentiMasa(); // Henti timer bila keluar menu
+            hentiMasa(); 
             document.getElementById('main-menu').style.display = 'block';
             document.getElementById('learning-area').style.display = 'none';
         }
 
-        function paparKandungan() {
+        // --- KAD LAPORAN UJIAN ---
+        function tunjukReportKad(status) {
+            hentiMasa();
+            mainkanBunyi('tamat');
+            
+            // Kira jumlah markah penuh (Nota tidak dikira sebagai soalan)
+            let jumlahSoalan = currentSubjek.filter(item => item.format !== 'nota').length;
+            let markahPenuh = jumlahSoalan * 10;
+            
+            // Ubah tajuk mengikut situasi
+            let tajukMesej = status === 'masa' ? "Masa Tamat! ⏰" : "Ujian Selesai! 🎉";
+            let warnaTajuk = status === 'masa' ? "#D32F2F" : "#0097A7";
+            
+            document.getElementById('display-title').innerText = tajukMesej;
+            document.getElementById('display-title').style.color = warnaTajuk;
             document.getElementById('feedback').innerText = "";
             
+            // Paparan Kad Laporan HTML
+            let htmlLaporan = `
+                <div class="report-card">
+                    <h2>Kad Laporan Ujian</h2>
+                    <p>Subjek Disiapkan</p>
+                    <div class="mark">${currentScore} / ${markahPenuh}</div>
+                    <p>Teruskan Usaha Adik!</p>
+                </div>
+            `;
+            
+            document.getElementById('display-text').innerHTML = htmlLaporan;
+            document.getElementById('action-area').innerHTML = '<button class="btn-action" style="background-color:#FF9800; margin-top:20px;" onclick="kembaliKeMenu()">Pilih Subjek Lain</button>';
+        }
+
+        function paparKandungan() {
+            dahJawab = false; // Buka balik kunci untuk soalan baru
+            document.getElementById('feedback').innerText = "";
+            document.getElementById('action-area').style.opacity = "1"; // Terangkan balik butang
+            
             if (currentIndex >= currentSubjek.length) {
-                hentiMasa(); // Henti timer sebab dah siap semua soalan
-                document.getElementById('display-title').innerText = "Tahniah! 🎉";
-                document.getElementById('display-text').innerHTML = "Adik berjaya tamatkan sebelum masa habis! Markah akhir: <strong>" + currentScore + "</strong>";
-                document.getElementById('action-area').innerHTML = '<button class="btn-action" onclick="kembaliKeMenu()">Pilih Subjek Lain</button>';
+                tunjukReportKad('selesai'); // Panggil Kad Laporan sebab dah siap
                 return;
             }
 
@@ -529,14 +553,18 @@
         }
 
         function semakObjektif(selected, correct) {
+            if (dahJawab) return; // Kalau dah tekan, abaikan klik seterusnya (Anti-Ciduk)
+            
             if (selected.toString().toLowerCase() === correct.toString().toLowerCase()) {
                 jawabBetul();
             } else {
-                jawabSalah();
+                jawabSalah(correct); // Hantar jawapan yang betul untuk dipaparkan
             }
         }
 
         function semakSubjektif(correct) {
+            if (dahJawab) return; 
+
             const inputField = document.getElementById('inputJawapan').value.trim().toLowerCase();
             const jawapanSebenar = correct.toString().toLowerCase();
             
@@ -549,7 +577,7 @@
             if (inputField === jawapanSebenar) {
                 jawabBetul();
             } else {
-                jawabSalah();
+                jawabSalah(correct); 
             }
         }
 
@@ -558,20 +586,27 @@
         }
 
         function jawabBetul() {
+            dahJawab = true; // Kunci butang
             mainkanBunyi('betul');
             currentScore += 10;
             document.getElementById('score').innerText = currentScore;
             document.getElementById('feedback').innerText = "🌟 BETUL! Pandai sangat!";
             document.getElementById('feedback').style.color = "#4CAF50";
             
-            document.getElementById('action-area').innerHTML = ""; 
-            setTimeout(() => { seterusnya(); }, 1500); // Saya lajukan sikit ke 1.5 saat sebab main dengan masa
+            document.getElementById('action-area').style.opacity = "0.4"; // Gelapkan butang
+            setTimeout(() => { seterusnya(); }, 1500); 
         }
 
-        function jawabSalah() {
+        function jawabSalah(jawapanSebenar) {
+            dahJawab = true; // Kunci butang
             mainkanBunyi('salah');
-            document.getElementById('feedback').innerText = "❌ Alamak, salah! Cuba lagi.";
+            
+            // Paparkan jawapan yang sebenar
+            document.getElementById('feedback').innerHTML = "❌ Salah sayang!<br>Jawapan sebenar: <strong>" + jawapanSebenar + "</strong>";
             document.getElementById('feedback').style.color = "#F44336";
+            
+            document.getElementById('action-area').style.opacity = "0.4"; // Gelapkan butang
+            setTimeout(() => { seterusnya(); }, 3000); // Tunggu 3 saat supaya anak sempat baca jawapan betul
         }
 
         function seterusnya() {
