@@ -8,7 +8,7 @@
         *, *::before, *::after { box-sizing: border-box; }
         
         body { 
-            font-family: 'Arial', cursive, sans-serif; 
+            font-family: 'Comic Sans MS', cursive, sans-serif; 
             background-color: #E0F7FA; 
             text-align: center; 
             margin: 0; 
@@ -54,8 +54,18 @@
             width: 80%;
             max-width: 250px;
             font-weight: bold;
+            transition: all 0.3s;
         }
         .menu-btn:active { box-shadow: 0 1px #FFB300; transform: translateY(3px); }
+
+        /* Gaya untuk butang yang dah dikunci */
+        .menu-btn:disabled {
+            background-color: #B0BEC5 !important; /* Warna Kelabu */
+            color: #78909C !important;
+            box-shadow: none !important;
+            cursor: not-allowed !important;
+            transform: none !important;
+        }
 
         .content-box {
             background-color: #F5F5F5;
@@ -126,10 +136,10 @@
         
         <div id="main-menu">
             <h2>Pilih Subjek Adik:</h2>
-            <button class="menu-btn" onclick="pilihSubjek('Sains')">🔬 Sains</button>
-            <button class="menu-btn" onclick="pilihSubjek('Matematik')">🧮 Matematik</button>
-            <button class="menu-btn" onclick="pilihSubjek('BM')">📖 Bahasa Melayu</button>
-            <button class="menu-btn" onclick="pilihSubjek('BI')">🔤 Bahasa Inggeris</button>
+            <button id="btn-Sains" class="menu-btn" onclick="pilihSubjek('Sains')">🔬 Sains</button>
+            <button id="btn-Matematik" class="menu-btn" onclick="pilihSubjek('Matematik')">🧮 Matematik</button>
+            <button id="btn-BM" class="menu-btn" onclick="pilihSubjek('BM')">📖 Bahasa Melayu</button>
+            <button id="btn-BI" class="menu-btn" onclick="pilihSubjek('BI')">🔤 Bahasa Inggeris</button>
         </div>
 
         <div id="learning-area" style="display: none;">
@@ -397,6 +407,7 @@
         let currentScore = 0;
         let dahJawab = false; 
         
+        let namaSubjekSemasa = ""; // Kenal pasti subjek yang sedang dijawab
         let timerInterval;
         let masaTinggal = 600; 
 
@@ -457,7 +468,6 @@
             document.getElementById('timer').innerText = minit + ":" + saat;
         }
 
-        // FUNGSI RAWAK (SHUFFLE)
         function kocokArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -467,16 +477,13 @@
         }
 
         function pilihSubjek(namaSubjek) {
+            namaSubjekSemasa = namaSubjek; // Simpan nama subjek semasa
             let dataSubjek = silibus[namaSubjek];
             
-            // Asingkan Nota dan Soalan
             let senaraiNota = dataSubjek.filter(item => item.format === "nota");
             let senaraiSoalan = dataSubjek.filter(item => item.format !== "nota");
             
-            // Rawakkan (Shuffle) susunan soalan
             senaraiSoalan = kocokArray(senaraiSoalan);
-            
-            // Gabungkan semula: Nota baca dulu, kemudian baru soalan rawak
             currentSubjek = senaraiNota.concat(senaraiSoalan);
             
             currentIndex = 0;
@@ -523,6 +530,18 @@
             
             document.getElementById('display-text').innerHTML = htmlLaporan;
             document.getElementById('action-area').innerHTML = '<button class="btn-action" style="background-color:#FF9800; margin-top:20px;" onclick="kembaliKeMenu()">Pilih Subjek Lain</button>';
+
+            // KUNCI BUTANG JIKA UJIAN SELESAI
+            if (status === 'selesai' || status === 'masa') {
+                let butangSubjek = document.getElementById("btn-" + namaSubjekSemasa);
+                if (butangSubjek) {
+                    butangSubjek.disabled = true;
+                    // Tambah tanda right (✅) kalau belum ada
+                    if (!butangSubjek.innerText.includes("✅")) {
+                        butangSubjek.innerText = butangSubjek.innerText + " ✅";
+                    }
+                }
+            }
         }
 
         function paparKandungan() {
@@ -546,7 +565,6 @@
             } 
             else if (item.format === "objektif") {
                 let optionsHtml = '';
-                // Rawakkan pilihan jawapan (A, B, C)
                 let pilihanRawak = kocokArray([...item.options]);
                 
                 pilihanRawak.forEach(opt => {
