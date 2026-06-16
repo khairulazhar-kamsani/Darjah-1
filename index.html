@@ -104,17 +104,6 @@
         }
 
         .feedback { font-size: 22px; margin-top: 15px; font-weight: bold; min-height: 40px; }
-        
-        .btn-kembali {
-            background-color: #F44336;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            font-size: 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            margin-bottom: 20px;
-        }
 
         .report-card {
             background-color: #FFF9C4;
@@ -142,7 +131,7 @@
         </div>
 
         <div id="learning-area" style="display: none;">
-            <button class="btn-kembali" onclick="kembaliKeMenu()">⬅️ Tukar Subjek</button>
+            <!-- Butang Tukar Subjek telah dibuang supaya anak terpaksa habiskan soalan -->
             
             <div class="top-bar">
                 <div class="score">Markah: <span id="score">0</span> 🌟</div>
@@ -492,7 +481,6 @@
             let senaraiNota = dataSubjek.filter(item => item.format === "nota");
             let senaraiSoalan = dataSubjek.filter(item => item.format !== "nota");
             
-            // Rawakkan soalan dan AMBIL 10 SAHAJA
             senaraiSoalan = kocokArray(senaraiSoalan);
             senaraiSoalan = senaraiSoalan.slice(0, 10);
             
@@ -523,7 +511,7 @@
             let tajukMesej = "";
             let warnaTajuk = "";
             let mesejMotivasi = "";
-            let markahPenuh = 100; // Sebab kita dah set tepat 10 soalan
+            let markahPenuh = 100; 
             
             if (status === 'masa') {
                 mainkanBunyi('tamat');
@@ -531,14 +519,12 @@
                 warnaTajuk = "#D32F2F";
                 mesejMotivasi = "Alamak, masa habis! Cuba lebih pantas lepas ni.";
             } else {
-                // Syarat lulus: 80 Markah ke atas
                 if (currentScore >= 80) {
                     mainkanBunyi('menang');
                     tajukMesej = "Lulus Cemerlang! 🏆";
                     warnaTajuk = "#4CAF50";
                     mesejMotivasi = "Tahniah! Adik sangat pandai!";
                     
-                    // Kunci butang sebab dah lulus
                     let butangSubjek = document.getElementById("btn-" + namaSubjekSemasa);
                     if (butangSubjek) {
                         butangSubjek.disabled = true;
@@ -547,7 +533,7 @@
                         }
                     }
                 } else {
-                    mainkanBunyi('salah'); // Bunyi amaran untuk buat semula
+                    mainkanBunyi('salah'); 
                     tajukMesej = "Cuba Lagi! 💪";
                     warnaTajuk = "#F57C00";
                     mesejMotivasi = "Adik perlukan sekurang-kurangnya 80 markah. Jom buat lagi!";
@@ -576,7 +562,6 @@
             document.getElementById('feedback').innerText = "";
             document.getElementById('action-area').style.opacity = "1"; 
             
-            // Kalau dah lepas semua nota dan 10 soalan
             if (currentIndex >= currentSubjek.length) {
                 tunjukReportKad('selesai'); 
                 return;
