@@ -24,7 +24,23 @@
             border: 6px solid #00BCD4; 
         }
         h1 { color: #0097A7; font-size: 28px; margin-top: 0; }
-        .score { font-size: 20px; color: #E65100; margin-bottom: 20px; font-weight: bold; }
+        
+        /* Bar Atas: Markah & Pemasa */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 10px 15px;
+            background-color: #FFF3E0;
+            border-radius: 15px;
+            border: 2px dashed #FF9800;
+        }
+        .score { font-size: 20px; color: #E65100; font-weight: bold; margin: 0; }
+        .timer { font-size: 20px; color: #D32F2F; font-weight: bold; margin: 0; }
+        .timer.warning { color: #B71C1C; animation: blink 1s infinite; }
+
+        @keyframes blink { 50% { opacity: 0.5; } }
         
         /* Bahagian Menu Subjek */
         .menu-btn {
@@ -101,16 +117,23 @@
     <div class="container">
         <h1>🎒 Mari Belajar Tahun 1 ✨</h1>
         
+        <!-- Menu Utama -->
         <div id="main-menu">
             <h2>Pilih Subjek Adik:</h2>
             <button class="menu-btn" onclick="pilihSubjek('Sains')">🔬 Sains</button>
             <button class="menu-btn" onclick="pilihSubjek('Matematik')">🧮 Matematik</button>
             <button class="menu-btn" onclick="pilihSubjek('BM')">📖 Bahasa Melayu</button>
+            <button class="menu-btn" onclick="pilihSubjek('BI')">🔤 Bahasa Inggeris</button>
         </div>
 
+        <!-- Ruangan Belajar & Kuiz -->
         <div id="learning-area" style="display: none;">
             <button class="btn-kembali" onclick="kembaliKeMenu()">⬅️ Tukar Subjek</button>
-            <div class="score">Markah Kuiz: <span id="score">0</span> 🌟</div>
+            
+            <div class="top-bar">
+                <div class="score">Markah: <span id="score">0</span> 🌟</div>
+                <div class="timer" id="timer-box">Masa: <span id="timer">10:00</span> ⏱️</div>
+            </div>
             
             <div class="content-box">
                 <div class="title-display" id="display-title">Tajuk</div>
@@ -123,7 +146,7 @@
     </div>
 
     <script>
-        // PANGKALAN DATA SILIBUS (NOTA DAN SOALAN)
+        // --- SILIBUS AWAK BERMULA DI SINI ---
         const silibus = {
             "Sains": [
                 // --- BAB 1: BENDA HIDUP & BUKAN HIDUP ---
@@ -279,17 +302,99 @@
                 { format: "objektif", tajuk: "Uji Minda: Bab 7", teks: "Permukaan rata sekeping duit syiling berbentuk...", options: ["Segi Tiga", "Bulatan", "Segi Empat"], answer: "Bulatan" }
             ],
             "BM": [
-                { format: "nota", tajuk: "Bab 1: Keluarga Saya", teks: "Keluarga asas terdiri daripada bapa, ibu, abang, kakak dan adik. Kita mesti hormat ahli keluarga kita." },
-                { format: "objektif", tajuk: "Uji Minda BM", teks: "Ibu kepada ayah kita dipanggil apa?", options: ["Nenek", "Mak Cik", "Kakak"], answer: "Nenek" },
-                { format: "subjektif", tajuk: "Uji Minda BM", teks: "Emak masak nasi di ceruk ____.", answer: "dapur" }
+                // --- BAB 1: KATA NAMA AM ---
+                { format: "nota", tajuk: "Bab 1: Kata Nama Am", teks: "Kata Nama Am digunakan untuk memanggil manusia, haiwan, tempat, atau benda secara umum.<br><br>Contoh: guru, kucing, sekolah, pensel.<br>Huruf pertamanya mesti ditulis dengan huruf kecil (kecuali di awal ayat)." },
+                { format: "objektif", tajuk: "Uji Minda: Bab 1", teks: "Manakah antara berikut adalah kata nama am bagi tempat?", options: ["Kucing", "Taman", "Kereta"], answer: "Taman" },
+                { format: "objektif", tajuk: "Uji Minda: Bab 1", teks: "Bapa membaca _______ di ruang tamu.", options: ["kasut", "surat khabar", "bola"], answer: "surat khabar" },
+                { format: "subjektif", tajuk: "Uji Minda: Bab 1", teks: "Haiwan yang suka makan ikan dan berbunyi 'meow' ialah ______.", answer: "kucing" },
+                { format: "subjektif", tajuk: "Uji Minda: Bab 1", teks: "Kita menulis menggunakan ______.", answer: "pensel" },
+                { format: "objektif", tajuk: "Uji Minda: Bab 1", teks: "Pilih kata nama am bagi benda.", options: ["Buku", "Harimau", "Doktor"], answer: "Buku" },
+
+                // --- BAB 2: KATA NAMA KHAS ---
+                { format: "nota", tajuk: "Bab 2: Kata Nama Khas", teks: "Kata Nama Khas ialah nama khas untuk manusia, haiwan, tempat atau benda.<br><br>Ia MESTI bermula dengan Huruf Besar.<br>Contoh: Ali, Si Tompok, Kuala Lumpur, Proton Saga." },
+                { format: "objektif", tajuk: "Uji Minda: Bab 2", teks: "Manakah cara tulisan yang betul untuk Kata Nama Khas?", options: ["kuala lumpur", "Kuala Lumpur", "Kuala lumpur"], answer: "Kuala Lumpur" },
+                { format: "subjektif", tajuk: "Uji Minda: Bab 2", teks: "Kucing saya bernama Si _______.", answer: "Tompok" },
+                { format: "objektif", tajuk: "Uji Minda: Bab 2", teks: "Pilih kata nama khas bagi manusia.", options: ["Guru", "Ahmad", "Murid"], answer: "Ahmad" },
+                { format: "subjektif", tajuk: "Uji Minda: Bab 2", teks: "Negara kita bernama _______.", answer: "Malaysia" },
+                { format: "objektif", tajuk: "Uji Minda: Bab 2", teks: "Cikgu _______ mengajar subjek Sains.", options: ["Siti", "siti", "sekolah"], answer: "Siti" },
+
+                // --- BAB 3: KATA GANTI NAMA DIRI ---
+                { format: "nota", tajuk: "Bab 3: Kata Ganti Nama", teks: "Digunakan untuk menggantikan nama orang.<br>Diri Pertama: Saya, Aku, Kami, Kita<br>Diri Kedua: Awak, Kamu<br>Diri Ketiga: Dia, Mereka" },
+                { format: "objektif", tajuk: "Uji Minda: Bab 3", teks: "“_______ suka makan nasi lemak,” kata Ali.", options: ["Awak", "Saya", "Dia"], answer: "Saya" },
+                { format: "subjektif", tajuk: "Uji Minda: Bab 3", teks: "Boleh _______ tolong ambilkan buku itu? (taip: awak/mereka)", answer: "awak" },
+                { format: "objektif", tajuk: "Uji Minda: Bab 3", teks: "_______ sedang bermain bola sepak di padang. (Ramai orang)", options: ["Dia", "Saya", "Mereka"], answer: "Mereka" },
+                { format: "subjektif", tajuk: "Uji Minda: Bab 3", teks: "_______ bernama Siti. (Ganti nama diri ketiga tunggal)", answer: "Dia" },
+                { format: "objektif", tajuk: "Uji Minda: Bab 3", teks: "“Mari _______ pergi ke kantin bersama-sama,” kata Abu kepada kawan-kawannya.", options: ["saya", "kita", "kamu"], answer: "kita" },
+
+                // --- BAB 4: KATA KERJA ---
+                { format: "nota", tajuk: "Bab 4: Kata Kerja", teks: "Kata kerja ialah perkataan yang menunjukkan perbuatan atau apa yang sedang dilakukan.<br><br>Contoh: berlari, makan, tidur, membaca, menangis." },
+                { format: "objektif", tajuk: "Uji Minda: Bab 4", teks: "Adik sedang _______ susu dari botol.", options: ["makan", "minum", "tidur"], answer: "minum" },
+                { format: "subjektif", tajuk: "Uji Minda: Bab 4", teks: "Ali _______ bola di padang.", answer: "tendang" },
+                { format: "objektif", tajuk: "Uji Minda: Bab 4", teks: "Ibu _______ ikan di dapur.", options: ["menggoreng", "membaca", "melukis"], answer: "menggoreng" },
+                { format: "subjektif", tajuk: "Uji Minda: Bab 4", teks: "Kakak sedang _______ lantai menggunakan penyapu.", answer: "menyapu" },
+                { format: "objektif", tajuk: "Uji Minda: Bab 4", teks: "Cikgu sedang _______ di hadapan kelas.", options: ["menangis", "mengajar", "bermain"], answer: "mengajar" },
+
+                // --- BAB 5: KATA ADJEKTIF (SIFAT) ---
+                { format: "nota", tajuk: "Bab 5: Kata Adjektif", teks: "Kata adjektif menerangkan sifat atau keadaan sesuatu benda.<br><br>Contoh Warna: merah, biru.<br>Contoh Sifat: pandai, rajin, cantik.<br>Contoh Ukuran: tinggi, rendah, besar, kecil." },
+                { format: "objektif", tajuk: "Uji Minda: Bab 5", teks: "Warna bendera yang melambangkan keberanian ialah...", options: ["Biru", "Kuning", "Merah"], answer: "Merah" },
+                { format: "subjektif", tajuk: "Uji Minda: Bab 5", teks: "Gajah ialah haiwan yang sangat _______.", answer: "besar" },
+                { format: "objektif", tajuk: "Uji Minda: Bab 5", teks: "Baju yang baru dibasuh berbau sangat...", options: ["busuk", "wangi", "pahit"], answer: "wangi" },
+                { format: "subjektif", tajuk: "Uji Minda: Bab 5", teks: "Rasa buah mangga yang belum masak sangat _______.", answer: "masam" },
+                { format: "objektif", tajuk: "Uji Minda: Bab 5", teks: "Ali selalu dapat nombor satu di kelas kerana dia murid yang...", options: ["malas", "rajin", "marah"], answer: "rajin" }
+            ],
+
+            "BI": [
+                // --- BAB 1: GREETINGS (UCAPAN) ---
+                { format: "nota", tajuk: "Chapter 1: Greetings", teks: "Words to greet people:<br><br>Selamat Pagi = Good morning<br>Selamat Malam = Good night<br>Terima Kasih = Thank you<br>Sama-sama = You are welcome<br>Maafkan saya = I am sorry" },
+                { format: "objektif", tajuk: "Quiz: Chapter 1", teks: "What do you say to your teacher in the morning?", options: ["Good night", "Good morning", "Thank you"], answer: "Good morning" },
+                { format: "subjektif", tajuk: "Quiz: Chapter 1", teks: "When someone gives you a gift, you say 'Thank _____'.", answer: "you" },
+                { format: "objektif", tajuk: "Quiz: Chapter 1", teks: "Before going to sleep, you say...", options: ["Good afternoon", "Good night", "Goodbye"], answer: "Good night" },
+                { format: "subjektif", tajuk: "Quiz: Chapter 1", teks: "If you make a mistake, you must say 'I am _____' (maaf).", answer: "sorry" },
+                { format: "objektif", tajuk: "Quiz: Chapter 1", teks: "When your friend says 'Thank you', you reply with...", options: ["You are welcome", "Good luck", "See you later"], answer: "You are welcome" },
+
+                // --- BAB 2: COLOURS (WARNA) ---
+                { format: "nota", tajuk: "Chapter 2: Colours", teks: "Let's learn colours!<br><br>Merah = Red<br>Biru = Blue<br>Kuning = Yellow<br>Hijau = Green<br>Hitam = Black<br>Putih = White" },
+                { format: "objektif", tajuk: "Quiz: Chapter 2", teks: "What colour is the sky in the morning?", options: ["Red", "Blue", "Green"], answer: "Blue" },
+                { format: "subjektif", tajuk: "Quiz: Chapter 2", teks: "A banana is usually ________ (kuning) in colour.", answer: "yellow" },
+                { format: "objektif", tajuk: "Quiz: Chapter 2", teks: "Leaves on a tree are usually...", options: ["Black", "White", "Green"], answer: "Green" },
+                { format: "subjektif", tajuk: "Quiz: Chapter 2", teks: "The colour of an apple is often ________ (merah).", answer: "red" },
+                { format: "objektif", tajuk: "Quiz: Chapter 2", teks: "If you mix black and white, what colour do you get?", options: ["Grey", "Pink", "Purple"], answer: "Grey" },
+
+                // --- BAB 3: NUMBERS 1 TO 10 ---
+                { format: "nota", tajuk: "Chapter 3: Numbers", teks: "Let's count from one to ten!<br>1 = One<br>2 = Two<br>3 = Three<br>4 = Four<br>5 = Five<br>6 = Six, 7 = Seven, 8 = Eight, 9 = Nine, 10 = Ten." },
+                { format: "objektif", tajuk: "Quiz: Chapter 3", teks: "What comes after the number 'Three'?", options: ["Two", "Four", "Five"], answer: "Four" },
+                { format: "subjektif", tajuk: "Quiz: Chapter 3", teks: "I have _______ (dua) eyes.", answer: "two" },
+                { format: "objektif", tajuk: "Quiz: Chapter 3", teks: "Which number is 'Sepuluh'?", options: ["Six", "Eight", "Ten"], answer: "Ten" },
+                { format: "subjektif", tajuk: "Quiz: Chapter 3", teks: "Cats have _______ (empat) legs.", answer: "four" },
+                { format: "objektif", tajuk: "Quiz: Chapter 3", teks: "How many fingers do you have on one hand?", options: ["Five", "Seven", "Ten"], answer: "Five" },
+
+                // --- BAB 4: PARTS OF THE BODY ---
+                { format: "nota", tajuk: "Chapter 4: Body Parts", teks: "Let's learn the parts of our body.<br><br>Mata = Eyes<br>Telinga = Ears<br>Hidung = Nose<br>Mulut = Mouth<br>Tangan = Hands<br>Kaki = Legs" },
+                { format: "objektif", tajuk: "Quiz: Chapter 4", teks: "We use our ______ to see the world.", options: ["Ears", "Eyes", "Hands"], answer: "Eyes" },
+                { format: "subjektif", tajuk: "Quiz: Chapter 4", teks: "We smell food using our _______ (hidung).", answer: "nose" },
+                { format: "objektif", tajuk: "Quiz: Chapter 4", teks: "Which part of the body do we use to walk?", options: ["Mouth", "Nose", "Legs"], answer: "Legs" },
+                { format: "subjektif", tajuk: "Quiz: Chapter 4", teks: "I bite the apple with my teeth inside my _______ (mulut).", answer: "mouth" },
+                { format: "objektif", tajuk: "Quiz: Chapter 4", teks: "We listen to music using our...", options: ["Eyes", "Ears", "Hair"], answer: "Ears" },
+
+                // --- BAB 5: ANIMALS ---
+                { format: "nota", tajuk: "Chapter 5: Animals", teks: "Name of the animals:<br><br>Kucing = Cat<br>Anjing = Dog<br>Burung = Bird<br>Ikan = Fish<br>Lembu = Cow<br>Ayam = Chicken" },
+                { format: "objektif", tajuk: "Quiz: Chapter 5", teks: "Which animal says 'Moo' and gives us milk?", options: ["Bird", "Cow", "Dog"], answer: "Cow" },
+                { format: "subjektif", tajuk: "Quiz: Chapter 5", teks: "A _______ (kucing) likes to catch mice.", answer: "cat" },
+                { format: "objektif", tajuk: "Quiz: Chapter 5", teks: "Which animal can fly in the sky?", options: ["Fish", "Bird", "Cat"], answer: "Bird" },
+                { format: "subjektif", tajuk: "Quiz: Chapter 5", teks: "A _______ (ikan) swims in the water.", answer: "fish" },
+                { format: "objektif", tajuk: "Quiz: Chapter 5", teks: "Which animal barks and guards the house?", options: ["Dog", "Cow", "Chicken"], answer: "Dog" }
             ]
         };
+        // --- SILIBUS AWAK BERAKHIR DI SINI ---
 
         let currentSubjek = [];
         let currentIndex = 0;
         let currentScore = 0;
+        
+        // Pembolehubah Pemasa (Timer)
+        let timerInterval;
+        let masaTinggal = 600; // 600 saat = 10 minit
 
-        // Fungsi Bunyi Automatik
         function mainkanBunyi(jenis) {
             const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             const oscillator = audioCtx.createOscillator();
@@ -304,15 +409,67 @@
                 gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
                 oscillator.start(audioCtx.currentTime);
                 oscillator.stop(audioCtx.currentTime + 0.5);
-            } else {
+            } else if (jenis === 'salah') {
                 oscillator.type = 'square';
                 oscillator.frequency.setValueAtTime(150, audioCtx.currentTime); 
                 gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
                 gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
                 oscillator.start(audioCtx.currentTime);
                 oscillator.stop(audioCtx.currentTime + 0.3);
+            } else if (jenis === 'tamat') {
+                // Bunyi panjang bila masa habis
+                oscillator.type = 'sawtooth';
+                oscillator.frequency.setValueAtTime(200, audioCtx.currentTime);
+                gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 1.5);
+                oscillator.start(audioCtx.currentTime);
+                oscillator.stop(audioCtx.currentTime + 1.5);
             }
         }
+
+        // --- SISTEM PEMASA ---
+        function mulaMasa() {
+            masaTinggal = 600; // Reset ke 10 minit
+            kemaskiniPaparanMasa();
+            document.getElementById('timer-box').classList.remove('warning');
+            
+            timerInterval = setInterval(() => {
+                masaTinggal--;
+                kemaskiniPaparanMasa();
+
+                // Berkelip merah bila masa tinggal 1 minit (60 saat)
+                if (masaTinggal <= 60) {
+                    document.getElementById('timer-box').classList.add('warning');
+                }
+
+                if (masaTinggal <= 0) {
+                    hentiMasa();
+                    masaDahTamat();
+                }
+            }, 1000);
+        }
+
+        function hentiMasa() {
+            clearInterval(timerInterval);
+        }
+
+        function kemaskiniPaparanMasa() {
+            let minit = Math.floor(masaTinggal / 60);
+            let saat = masaTinggal % 60;
+            if (minit < 10) minit = "0" + minit;
+            if (saat < 10) saat = "0" + saat;
+            document.getElementById('timer').innerText = minit + ":" + saat;
+        }
+
+        function masaDahTamat() {
+            mainkanBunyi('tamat');
+            document.getElementById('display-title').innerText = "Masa Tamat! ⏰";
+            document.getElementById('display-title').style.color = "#D32F2F";
+            document.getElementById('display-text').innerHTML = "Alamak, masa adik dah habis untuk subjek ini!<br><br>Markah terkumpul adik: <strong>" + currentScore + "</strong> 🌟";
+            document.getElementById('action-area').innerHTML = '<button class="btn-action" style="background-color:#FF9800;" onclick="kembaliKeMenu()">Pilih Subjek Lain</button>';
+            document.getElementById('feedback').innerText = "";
+        }
+        // ---------------------
 
         function pilihSubjek(namaSubjek) {
             currentSubjek = silibus[namaSubjek];
@@ -322,11 +479,15 @@
             document.getElementById('main-menu').style.display = 'none';
             document.getElementById('learning-area').style.display = 'block';
             document.getElementById('score').innerText = currentScore;
+            document.getElementById('display-title').style.color = "#0097A7";
             
+            hentiMasa();
+            mulaMasa(); // Mulakan timer bila subjek ditekan
             paparKandungan();
         }
 
         function kembaliKeMenu() {
+            hentiMasa(); // Henti timer bila keluar menu
             document.getElementById('main-menu').style.display = 'block';
             document.getElementById('learning-area').style.display = 'none';
         }
@@ -335,8 +496,9 @@
             document.getElementById('feedback').innerText = "";
             
             if (currentIndex >= currentSubjek.length) {
+                hentiMasa(); // Henti timer sebab dah siap semua soalan
                 document.getElementById('display-title').innerText = "Tahniah! 🎉";
-                document.getElementById('display-text').innerHTML = "Adik dah tamat belajar subjek ini! Markah akhir: <strong>" + currentScore + "</strong>";
+                document.getElementById('display-text').innerHTML = "Adik berjaya tamatkan sebelum masa habis! Markah akhir: <strong>" + currentScore + "</strong>";
                 document.getElementById('action-area').innerHTML = '<button class="btn-action" onclick="kembaliKeMenu()">Pilih Subjek Lain</button>';
                 return;
             }
@@ -347,11 +509,9 @@
             
             const actionArea = document.getElementById('action-area');
             
-            // Format Nota (Hanya baca)
             if (item.format === "nota") {
                 actionArea.innerHTML = `<button class="btn-action" style="background-color:#2196F3;" onclick="seterusnya()">Faham, Seterusnya! ➡️</button>`;
             } 
-            // Format Kuiz Objektif
             else if (item.format === "objektif") {
                 let optionsHtml = '';
                 item.options.forEach(opt => {
@@ -359,7 +519,6 @@
                 });
                 actionArea.innerHTML = optionsHtml;
             } 
-            // Format Kuiz Subjektif (Isi tempat kosong)
             else if (item.format === "subjektif") {
                 actionArea.innerHTML = `
                     <input type="text" id="inputJawapan" class="input-jawapan" placeholder="Taip jawapan..." onkeyup="checkEnter(event, '${item.answer}')">
@@ -405,14 +564,13 @@
             document.getElementById('feedback').innerText = "🌟 BETUL! Pandai sangat!";
             document.getElementById('feedback').style.color = "#4CAF50";
             
-            // Sembunyikan butang sementara tunggu
             document.getElementById('action-area').innerHTML = ""; 
-            setTimeout(() => { seterusnya(); }, 2000);
+            setTimeout(() => { seterusnya(); }, 1500); // Saya lajukan sikit ke 1.5 saat sebab main dengan masa
         }
 
         function jawabSalah() {
             mainkanBunyi('salah');
-            document.getElementById('feedback').innerText = "❌ Alamak, cuba lagi sayang!";
+            document.getElementById('feedback').innerText = "❌ Alamak, salah! Cuba lagi.";
             document.getElementById('feedback').style.color = "#F44336";
         }
 
